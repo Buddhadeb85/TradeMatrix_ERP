@@ -1,0 +1,50 @@
+{
+    "name": "server",
+    "version": "1.0.0",
+    "description": "TradeMatrix ERP Backend",
+    "main": "dist/index.js",
+    "scripts": {
+    "dev": "ts-node-dev src/index.ts",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "prisma generate || exit 0",
+    "db:setup-admin": "ts-node src/routes/reset-admin.ts",
+    "db:setup-cashier": "ts-node src/routes/manage-user.ts",
+    "db:register": "ts-node src/routes/register-user.ts",
+    "db:test-auth": "ts-node src/routes/test-auth.ts"
+    },
+    "keywords": [
+        "erp",
+        "pos",
+        "tradematrix"
+    ],
+    "author": "Rupam Das",
+    "license": "ISC",
+    "type": "commonjs",
+    "dependencies": {
+        "@prisma/client": "^5.19.0",
+        "axios": "^1.21.0",
+        "bcrypt": "^6.0.0",
+        "cors": "^2.8.6",
+        "dotenv": "^18.0.9",
+        "express": "^5.3.0",
+        "express-rate-limit": "^8.7.3",
+        "helmet": "^8.3.0",
+        "jsonwebtoken": "^9.0.3"
+    },
+    "devDependencies": {
+        "@types/bcrypt": "^6.0.0",
+        "@types/cors": "^2.8.19",
+        "@types/express": "^5.0.6",
+        "@types/express-rate-limit": "^5.1.3",
+        "@types/jsonwebtoken": "^9.0.10",
+        "@types/node": "^26.6.6",
+        "esbuild": "^0.28.2",
+        "prisma": "^5.19.0",
+        "ts-node-dev": "^2.0.0",
+        "typescript": "^6.0.3"
+    },
+    "prisma": {
+        "seed": "ts-node prisma/seed.ts"
+    }
+}
