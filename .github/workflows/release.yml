@@ -41,10 +41,11 @@ jobs:
         uses: tauri-apps/tauri-action@v0.5.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
         with:
           tagName: ${{ github.ref_name }}
           releaseName: 'TradeMatrix ERP ${{ github.ref_name }}'
-          releaseBody: 'Automated production desktop build for TradeMatrix ERP.'
+          releaseBody: 'Automated production signed desktop build for TradeMatrix ERP with auto-update support.'
           releaseDraft: false
           prerelease: false
           args: ""
