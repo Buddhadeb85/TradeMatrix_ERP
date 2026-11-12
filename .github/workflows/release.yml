@@ -1,0 +1,50 @@
+name: "Publish Release"
+
+on:
+  push:
+    tags:
+      - 'v*' # Triggered whenever you push a version tag like v1.0.0
+
+jobs:
+  publish-tauri:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [windows-latest]
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Setup Rust ecosystem
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install dependencies (Root, Client, Server)
+        run: |
+          npm install
+          cd client && npm install && cd ..
+          cd server && npm install && cd ..
+
+      - name: Build frontend client (if needed for Tauri bundling)
+        run: |
+          cd client && npm run build && cd ..
+
+      - name: Run Tauri Action
+        uses: tauri-apps/tauri-action@v0.5.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: 'TradeMatrix ERP ${{ github.ref_name }}'
+          releaseBody: 'Automated production desktop build for TradeMatrix ERP.'
+          releaseDraft: false
+          prerelease: false
+          args: ""
